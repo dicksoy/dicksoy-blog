@@ -1,0 +1,28 @@
+/*
+ *
+ * Template Name: Fullscreen Login
+ * Description: Login Template with Fullscreen Background Slideshow
+ * Author: Anli Zaimi
+ * Author URI: http://azmind.com
+ *
+ */
+
+
+body {
+    /*font-family: 'PT Sans', Helvetica, Arial, sans-serif;*/
+	font-family:"Microsoft YaHei",微软雅黑,"Microsoft JhengHei",华文细黑,STHeiti,MingLiu;
+    text-align: center;
+}
+
+.connect {
+    width: 800px;
+    margin: 50px auto 0 auto;
+    font-size: 14px;
+    text-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.connect p{
+    position:relative;
+	left:-140%;
+	top:0;
+	color: #FFF;
+}

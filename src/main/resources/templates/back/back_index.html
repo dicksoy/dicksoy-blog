@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>th</title>
+<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" />
+<link rel="stylesheet" th:href="@{../static/back/css/default-admin.css}" />
+<link rel="stylesheet" th:href="@{../static/back/css/default-base.css}" />
+<link rel="stylesheet" th:href="@{../static/back/css/default-init.css}" />
+<link rel="stylesheet" th:href="@{../static/back/lib/CodeMirrorEditor/codemirror.min.css}" />
+<link rel="stylesheet" th:href="@{../static/back/lib/highlight.js-9.6.0/styles/github.css}" />
+<link rel="stylesheet" th:href="@{../static/back/css/style.css}" />
+<style>
+	/*div {
+		border: 1px solid #00ff00;
+	}*/
+</style>
+</head>
+<body>
+	<div id="wrapper">
+		<div class="overlay"></div>
+		<!-- Sidebar -->
+		<nav class="navbar navbar-inverse navbar-fixed-top"
+			id="sidebar-wrapper" role="navigation">
+			<ul class="nav sidebar-nav">
+				<li class="sidebar-brand"><a>Dicksoy Blog</a></li>
+				<li onclick="articleListBack()"><a><i class="fa fa-fw fa-home"></i>文章管理</a></li>
+				<li><a href="#"><i class="fa fa-fw fa-folder"></i>评论管理</a></li>
+				<li><a href="#"><i class="fa fa-fw fa-file-o"></i>图片管理</a></li>
+				<li><a href="#"><i class="fa fa-fw fa-cog"></i>待定</a>
+				</li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-plus"></i>Dropdown <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li class="dropdown-header">Dropdown heading</li>
+						<li><a href="#">Action</a></li>
+						<li><a href="#">Another action</a></li>
+						<li><a href="#">Something else here</a></li>
+						<li><a href="#">Separated link</a></li>
+						<li><a href="#">One more separated link</a></li>
+					</ul></li>
+				<li><a href="#"><i class="fa fa-fw fa-bank"></i>待定2</a></li>
+				<li><a href="#"><i class="fa fa-fw fa-dropbox"></i>待定3</a></li>
+				<li><a href="#"><i class="fa fa-fw fa-twitter"></i>待定4</a></li>
+			</ul>
+		</nav>
+		<!-- /#sidebar-wrapper -->
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+			<button type="button" class="hamburger is-closed animated fadeInLeft"
+				data-toggle="offcanvas">
+				<span class="hamb-top"></span> <span class="hamb-middle"></span>
+				<span class="hamb-bottom"></span>
+			</button>
+
+			<div class="container" id="articleList">
+				<div class="row" style="display: none;">
+					<div class="col-lg-8 col-lg-offset-2">
+						<h1 class="page-header"> title </h1>
+						<h2 class="page-header"> createTime </h2>
+						<p class="lead">description
+							<a href="http://bootsnipp.com/maridlcrmn" target="_blank">maridlcrmn</a>
+						</p>
+					</div>
+				</div>
+				<!-- 编辑区 -->
+				<div id="tabsPanel_article" class="none" style="display: block;">
+					<div class="form">
+						<div>
+							<label>标题：</label>
+							<input id="title" type="text" />
+						</div>
+						<div>
+							<label>正文：</label>
+							<div>
+								<textarea id="articleContent" name="articleContent" style="height: 500px; width: 100%; display: none;"></textarea>
+								<div class="editor-toolbar">
+									<a class="tooltipped tooltipped-n" aria-label="添加粗体 《ctrl+b>"><span class="icon-bold"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="添加斜体 《ctrl+i>"><span class="icon-italic"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="插入引用 《ctrl+e>"><span class="icon-quote"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="添加链接 《ctrl+k>"><span class="icon-link"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="添加无序列表 《ctrl+l>"><span class="icon-unordered-list"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="添加有序列表 《shift+ctrl+l>"><span class="icon-ordered-list"></span></a><span style="display: inline-block;top:1px" class="tooltipped tooltipped-n" aria-label="上传文件"><form id="articleContentfileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form></span>
+									<a class="tooltipped tooltipped-n" aria-label="恢复 《shift+ctrl+z>"><span class="icon-redo"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="撤销 《ctrl+z>"><span class="icon-undo"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="预览 《ctrl+d>"><span class="icon-preview"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="全屏 《shift+ctrl+a>"><span class="icon-fullscreen"></span></a>
+								</div>
+								<div class="CodeMirror cm-s-default CodeMirror-wrap">
+									<div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 4px; left: 5px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none;" tabindex="0"></textarea></div>
+									<div class="CodeMirror-vscrollbar" cm-not-content="true">
+										<div style="min-width: 1px; height: 0px;"></div>
+									</div>
+									<div class="CodeMirror-hscrollbar" cm-not-content="true">
+										<div style="height: 100%; min-height: 1px; width: 0px;"></div>
+									</div>
+									<div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div>
+									<div class="CodeMirror-gutter-filler" cm-not-content="true"></div>
+									<div class="CodeMirror-scroll" tabindex="-1">
+										<div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: -17px; border-right-width: 13px; min-height: 23px; padding-right: 0px; padding-bottom: 0px;">
+											<div style="position: relative; top: 0px;">
+												<div class="CodeMirror-lines">
+													<div style="position: relative; outline: none;">
+														<div class="CodeMirror-measure"><span><span>​</span>x</span>
+														</div>
+														<div class="CodeMirror-measure"></div>
+														<div style="position: relative; z-index: 1;"></div>
+														<div class="CodeMirror-cursors">
+															<div class="CodeMirror-cursor" style="left: 4px; top: 0px; height: 15px;">&nbsp;</div>
+														</div>
+														<div class="CodeMirror-code"><pre class=" CodeMirror-line "><span style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div style="position: absolute; height: 13px; width: 1px; top: 23px; border-bottom: 0px solid transparent;"></div>
+										<div class="CodeMirror-gutters" style="display: none; height: 313px;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div>
+							<label>文件上传 <a href="https://hacpai.com/article/1442418791213" target="_blank">(?)</a></label>
+							<form id="articleUpload" method="POST" enctype="multipart/form-data">
+								<input type="file" name="file" multiple="" /><span></span>
+							</form>
+						</div>
+						<div>
+							<label>标签（使用英文输入状态下的逗号进行分隔）：</label>
+							<input id="tag" type="text" class="completed-input" style="width: 783px;" /><button onclick="$('#tagCheckboxPanel').toggle()" >选择</button>
+							<div id="tagSelectedPanel" class="completed-panel" style="height:160px;"></div>
+							<div class="none completed-ck" id="tagCheckboxPanel"><span class="">Solo</span>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="comment-content">
+							<label>摘要：</label>
+							<div>
+								<textarea id="abstract" style="height: 200px; width: 100%; display: none;" name="abstract"></textarea>
+								<div class="editor-toolbar">
+									<a class="tooltipped tooltipped-n" aria-label="添加粗体 《ctrl+b>"><span class="icon-bold"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="添加斜体 《ctrl+i>"><span class="icon-italic"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="插入引用 《ctrl+e>"><span class="icon-quote"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="添加链接 《ctrl+k>"><span class="icon-link"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="添加无序列表 《ctrl+l>"><span class="icon-unordered-list"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="添加有序列表 《shift+ctrl+l>"><span class="icon-ordered-list"></span></a><span style="display: inline-block;top:1px" class="tooltipped tooltipped-n" aria-label="上传文件"><form id="abstractfileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file" /></label></form></span>
+									<a class="tooltipped tooltipped-n" aria-label="恢复 《shift+ctrl+z>"><span class="icon-redo"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="撤销 《ctrl+z>"><span class="icon-undo"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="预览 《ctrl+d>"><span class="icon-preview"></span></a>
+									<a class="tooltipped tooltipped-n" aria-label="全屏 《shift+ctrl+a>"><span class="icon-fullscreen"></span></a>
+								</div>
+								<div class="CodeMirror cm-s-default CodeMirror-wrap">
+									<div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 4px; left: 5px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none;" tabindex="0"></textarea></div>
+									<div class="CodeMirror-vscrollbar" cm-not-content="true">
+										<div style="min-width: 1px; height: 0px;"></div>
+									</div>
+									<div class="CodeMirror-hscrollbar" cm-not-content="true">
+										<div style="height: 100%; min-height: 1px; width: 0px;"></div>
+									</div>
+									<div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div>
+									<div class="CodeMirror-gutter-filler" cm-not-content="true"></div>
+									<div class="CodeMirror-scroll" tabindex="-1">
+										<div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: -17px; border-right-width: 13px; min-height: 23px; padding-right: 0px; padding-bottom: 0px;">
+											<div style="position: relative; top: 0px;">
+												<div class="CodeMirror-lines">
+													<div style="position: relative; outline: none;">
+														<div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div>
+														<div class="CodeMirror-measure"></div>
+														<div style="position: relative; z-index: 1;"></div>
+														<div class="CodeMirror-cursors">
+															<div class="CodeMirror-cursor" style="left: 4px; top: 0px; height: 15px;">&nbsp;</div>
+														</div>
+														<div class="CodeMirror-code"><pre class=" CodeMirror-line "><span style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div style="position: absolute; height: 13px; width: 1px; top: 23px; border-bottom: 0px solid transparent;"></div>
+										<div class="CodeMirror-gutters" style="display: none; height: 183px;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div>
+							<div class="left">
+								<label for="permalink">链接：</label>
+								<input id="permalink" type="text" style="width: 416px;" />
+							</div>
+							<div class="right">
+								<label for="viewPwd">访问密码：</label>
+								<input id="viewPwd" type="text" style="width: 156px" />
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div>
+						<span class="signs">
+            <label>签名档：</label>
+            <button style="margin-left: 0px;" id="articleSign1" class="selected">签名档 1</button>
+            <button id="articleSign2">签名档 2</button>
+            <button id="articleSign3">签名档 3</button>
+            <button id="articleSign0">不使用签名档</button>
+        </span>
+							<div class="right">
+								<label for="articleCommentable">允许评论：</label>
+								<input type="checkbox" id="articleCommentable" checked="checked" />
+								<span id="postToCommunityPanel" class="none">
+                <label for="postToCommunity">
+                    <a class="no-underline" href="https://hacpai.com/article/1440573175609" target="_blank">发布到社区：</a>
+                </label>
+                <input id="postToCommunity" type="checkbox" checked="checked" />
+            </span>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="right">
+							<button id="unSubmitArticle" class="none marginRight12" onclick="admin.article.unPublish();">取消发布</button>
+							<button class="marginRight12" id="saveArticle">保存草稿夹</button>
+							<button id="submitArticle">发布</button>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- Generated by Latke (https://github.com/b3log/latke) in 1ms, 2018/01/04 15:51:45 -->
+				</div>
+				<!--编辑器End-->
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var trigger = $('.hamburger'), overlay = $('.overlay'), isClosed = false;
+
+			trigger.click(function() {
+				hamburger_cross();
+			});
+
+			function hamburger_cross() {
+
+				if (isClosed == true) {
+					overlay.hide();
+					trigger.removeClass('is-open');
+					trigger.addClass('is-closed');
+					isClosed = false;
+				} else {
+					overlay.show();
+					trigger.removeClass('is-closed');
+					trigger.addClass('is-open');
+					isClosed = true;
+				}
+			}
+
+			$('[data-toggle="offcanvas"]').click(function() {
+				$('#wrapper').toggleClass('toggled');
+			});
+		});
+
+		function loadListByType(type) {
+			$.ajax({
+				type : "get", // 使用post方法访问后台
+				dataType : "json", // 返回json格式的数据
+				url : "/article/queryArticleListByCondition", //要访问的后台地址
+				async : true,
+				data : {
+					type : type
+				},
+				success : function(data) {
+					if (data.code == 200) {
+						// 查询用户等级跳转到指定页面
+						console.log(data);
+					} else {
+						alert(data.msg);
+					}
+				},
+				error : function() {
+					console.log("Error")
+				}
+			});
+		}
+
+		function articleListBack() {
+            $('#articleList').show();
+            $.ajax({
+                type : "post", // 使用post方法访问后台
+                dataType : "json", // 返回json格式的数据
+                url : "/article/articleListBack", //要访问的后台地址
+                async : true,
+                data : {},
+                success : function(data) {
+                    if (data.code == 200) {
+                        // 查询用户等级跳转到指定页面
+                        console.log(data);
+                        var doc = ''
+						+ '<div class="row">'
+						+	'<div class="col-lg-8 col-lg-offset-2">'
+						+		'<h1 class="page-header"> title </h1>'
+						+		'<h2 class="page-header"> createTime </h2>'
+						+		'<p class="lead">description'
+						+		'<a href="http://bootsnipp.com/maridlcrmn" target="_blank">maridlcrmn</a>'
+						+		'</p>'
+						+	'</div>'
+                        +'</div>';
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error : function() {
+                    console.log("Error")
+                }
+            });
+		}
+	</script>
+	<script th:src="@{../static/back/js/lib/compress/admin-lib.min.js}"></script>
+	<script th:src="@{../static/back/js/lib/tiny_mce/tiny_mce.js}"></script>
+	<script th:src="@{../static/back/js/lib/KindEditor/kindeditor-min.js}"></script>
+	<script th:src="@{../static/back/js/common.js}"></script>
+		<script th:src="@{../static/back/js/admin/admin.js}"></script>
+		<script th:src="@{../static/back/js/admin/editor.js}"></script>
+		<script th:src="@{../static/back/js/admin/editorTinyMCE.js}"></script>
+		<script th:src="@{../static/back/js/admin/editorKindEditor.js}"></script>
+		<script th:src="@{../static/back/js/admin/editorCodeMirror.js}"></script>
+		<script th:src="@{../static/back/js/admin/tablePaginate.js}"></script>
+		<script th:src="@{../static/back/js/admin/article.js}"></script>
+		<script th:src="@{../static/back/js/admin/comment.js}"></script>
+		<script th:src="@{../static/back/js/admin/articleList.js}"></script>
+		<script th:src="@{../static/back/js/admin/draftList.js}"></script>
+		<script th:src="@{../static/back/js/admin/pageList.js}"></script>
+		<script th:src="@{../static/back/js/admin/others.js}"></script>
+		<script th:src="@{../static/back/js/admin/linkList.js}"></script>
+		<script th:src="@{../static/back/js/admin/preference.js}"></script>
+		<script th:src="@{../static/back/js/admin/pluginList.js}"></script>
+		<script th:src="@{../static/back/js/admin/userList.js}"></script>
+		<script th:src="@{../static/back/js/admin/categoryList.js}"></script>
+		<script th:src="@{../static/back/js/admin/commentList.js}"></script>
+		<script th:src="@{../static/back/js/admin/plugin.js}"></script>
+		<script th:src="@{../static/back/js/admin/main.js}"></script>
+		<script th:src="@{../static/back/js/admin/about.js}"></script>
+</body>
+</html>

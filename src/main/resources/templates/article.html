@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title th:text="${article.title}"></title>
+<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" />
+<link rel="stylesheet" th:href="@{../static/css/article/style.css}" />
+</head>
+<body>
+	<div id="wrapper">
+		<div id="page-content-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-8 col-lg-offset-2">
+						<h1 class="page-header" th:text="${article.title}"></h1>
+						<h2 class="page-header" th:text="${article.createTime}"></h2>
+						<p class="lead">
+							${article.content}
+							<!-- <a href="http://bootsnipp.com/maridlcrmn" target="_blank">maridlcrmn</a> -->
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var trigger = $('.hamburger'), overlay = $('.overlay'), isClosed = false;
+
+			trigger.click(function() {
+				hamburger_cross();
+			});
+
+			function hamburger_cross() {
+
+				if (isClosed == true) {
+					overlay.hide();
+					trigger.removeClass('is-open');
+					trigger.addClass('is-closed');
+					isClosed = false;
+				} else {
+					overlay.show();
+					trigger.removeClass('is-closed');
+					trigger.addClass('is-open');
+					isClosed = true;
+				}
+			}
+
+			$('[data-toggle="offcanvas"]').click(function() {
+				$('#wrapper').toggleClass('toggled');
+			});
+		});
+
+		function loadListByType(type) {
+			$.ajax({
+				type : "get", // 使用post方法访问后台
+				dataType : "json", // 返回json格式的数据
+				url : "/article/queryArticleListByCondition", //要访问的后台地址
+				async : true,
+				data : {
+					type : type
+				},
+				success : function(data) {
+					if (data.code == 200) {
+						// 查询用户等级跳转到指定页面
+						console.log(data);
+					} else {
+						alert(data.msg);
+					}
+				},
+				error : function() {
+					console.log("Error")
+				}
+			});
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dicksoy.blog.dao.AphorismDao">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.dicksoy.blog.po.Aphorism">
+		<id column="id" property="id" />
+		<result column="aphorism_english" property="aphorismEnglish" />
+		<result column="aphorism_chinese" property="aphorismChinese" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="sort" property="sort" />
+	</resultMap>
+
+	<sql id="columns">
+		id,
+		aphorism_english,
+		aphorism_chinese,
+		create_user,
+		create_time,
+		sort
+	</sql>
+	
+	<sql id="table">
+		t_aphorism
+	</sql>
+	<select id="selectOneRandom" resultMap="BaseResultMap">
+		SELECT <include refid="columns"/> FROM <include refid="table"/> ORDER BY RAND() LIMIT 1
+	</select>
+</mapper>
