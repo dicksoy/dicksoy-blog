@@ -16,6 +16,8 @@ public class BlogApplication {
 		SpringApplication app = new SpringApplication();
 		app.setRegisterShutdownHook(true);
 		int s = 0;
+		int s1 = 1;
+		
 		app.run(BlogApplication.class, args);
 		
 	}
