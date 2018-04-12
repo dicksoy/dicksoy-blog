@@ -187,6 +187,7 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<defaultGoal>compile</defaultGoal>
 	</build>
 
 	<!-- <build>
